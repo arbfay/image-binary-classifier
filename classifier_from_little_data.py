@@ -1,5 +1,5 @@
 # By Arbai Faycal, based on works of Francois Cholelt
-# Achieved an approx. 80% accuracy rate
+# Achieved an approx. 81/82% accuracy
 
 import h5py
 from keras.preprocessing.image import ImageDataGenerator, array_to_img, img_to_array, load_img
@@ -15,11 +15,11 @@ else:
     input_shape = (150, 150, 3)
 
 model = Sequential()
-model.add(Conv2D(32, (3, 3), input_shape=input_shape))
+model.add(Conv2D(16, (3, 3), input_shape=input_shape))
 model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2,2), data_format="channels_first"))
 
-model.add(Conv2D(64, (3, 3)))
+model.add(Conv2D(32, (3, 3)))
 model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2, 2), data_format="channels_first"))
 
@@ -47,6 +47,7 @@ train_datagen = ImageDataGenerator(
         zoom_range=0.2,
         horizontal_flip=True)
 
+# data augmentation for validation
 test_datagen = ImageDataGenerator(rescale=1./255)
 
 train_generator = train_datagen.flow_from_directory(
@@ -55,7 +56,6 @@ train_generator = train_datagen.flow_from_directory(
         batch_size=batch_size,
         class_mode='binary')
 
-# data augmentation for validation
 validation_generator = test_datagen.flow_from_directory(
         'data/validation',
         target_size=(150, 150),
